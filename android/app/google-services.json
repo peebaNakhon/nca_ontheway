@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1014300320366",
+    "project_id": "ncaotw2",
+    "storage_bucket": "ncaotw2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014300320366:android:1cae55effd21c101683c7f",
+        "android_client_info": {
+          "package_name": "com.nca.onthewayv2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGJnHeRhM5Y7QO7eZ3MdNHl69LECzq7zY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

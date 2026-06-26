@@ -1,0 +1,56 @@
+# Note: In a yml each level is padded by 2 spaces
+name: siwadol_flutter_auto_build
+
+on:
+  # Runs this action when you push on main
+  push:
+    branches: [ "main" ]
+  # Runs this when a PR against main is created
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  flutter_job:
+
+    # The machine, we can also use windows-latest or ubuntu-latest
+    # We are choosing macos-latest because we will be also building for iOS
+    runs-on: macos-latest
+
+    steps:
+
+      # Clones the project on the machine
+      - uses: actions/checkout@v4
+
+      # Sets up java 11
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      # Installs flutter and related dependency on this machine
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.24.5'
+          # ^ If you want to use a specific version of flutter
+      
+      # Fetches proj dependencies from pub
+      - name: Install dependencies
+        run: flutter pub get
+          # ^ If you want to use a specific version of flutter
+
+      # Verifies if the dart code is formatted well
+      - name: Verify formatting
+        run: dart format --output=none .
+        # --set-exit-if-changed stops execution if the any code is not well formatted
+        # --output=none prints files which needs to be formatted
+
+      # Checks for Symantic errors. Can be configured using analysis_options.yaml
+      - name: Analyze project source
+        run: flutter analyze --fatal-warnings
+        # --fatal-warnings stops execution if any warnings are found
+
+      # Create android apk
+      - name: Build apk
+        run: flutter build apk

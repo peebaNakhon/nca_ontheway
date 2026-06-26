@@ -1,0 +1,2 @@
+D:/flutterApp/ncaontheway/nca_onthewayv2/android/app/.cxx/Debug/1x2g1v2m/x86_64/CMakeFiles/edit_cache.dir
+D:/flutterApp/ncaontheway/nca_onthewayv2/android/app/.cxx/Debug/1x2g1v2m/x86_64/CMakeFiles/rebuild_cache.dir

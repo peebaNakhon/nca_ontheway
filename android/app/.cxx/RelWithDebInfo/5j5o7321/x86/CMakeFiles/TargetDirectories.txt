@@ -1,0 +1,2 @@
+/home/baramee/Desktop/nca_ontheway/android/app/.cxx/RelWithDebInfo/5j5o7321/x86/CMakeFiles/edit_cache.dir
+/home/baramee/Desktop/nca_ontheway/android/app/.cxx/RelWithDebInfo/5j5o7321/x86/CMakeFiles/rebuild_cache.dir

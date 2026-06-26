@@ -1,0 +1,6 @@
+projectKey=ncaotw2
+serverUrl=http://localhost:9001
+serverVersion=10.7.0.96327
+dashboardUrl=http://localhost:9001/dashboard?id=ncaotw2
+ceTaskId=85e485ca-e15f-4595-b8df-948fcd8b7ccf
+ceTaskUrl=http://localhost:9001/api/ce/task?id=85e485ca-e15f-4595-b8df-948fcd8b7ccf
