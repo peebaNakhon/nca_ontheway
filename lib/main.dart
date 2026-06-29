@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nca_ontheway/class/Commom.dart';
 import 'package:nca_ontheway/class/api_calling.dart';
+import 'package:nca_ontheway/countdown_gate.dart';
 import 'package:nca_ontheway/landingPage.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,8 +34,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'NCA ON THE WAY',
-        theme: ThemeData(useMaterial3: true, primaryColor: const Color.fromRGBO(53, 59, 64, 1), scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255), fontFamily: 'Prompt'),
-        home: const LoginPage(),
+        theme: ThemeData(
+            useMaterial3: true,
+            primaryColor: const Color.fromRGBO(53, 59, 64, 1),
+            scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+            fontFamily: 'Prompt'),
+        home: const CountdownGate(child: LoginPage()),
         builder: EasyLoading.init());
   }
 }
@@ -47,7 +52,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
   // final updater = ShorebirdUpdater();
   // Patch? _currentPatch;
   // bool _updateAvailable = false;
@@ -74,7 +78,6 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-
     _getSystemInformation();
     _checkAppVersion();
     _checkNFCAvailable();
@@ -97,10 +100,6 @@ class _LoginPageState extends State<LoginPage> {
     //     _controller.play();
     //     _controller.setLooping(true);
     //   });
-
-    FlutterNativeSplash.remove();
-
-
     //     updater.readCurrentPatch().then((patch) {
     //   setState(() => _currentPatch = patch);
     // });
@@ -109,7 +108,6 @@ class _LoginPageState extends State<LoginPage> {
     // updater.checkForUpdate().then((status) {
     //   setState(() => _updateAvailable = status == UpdateStatus.outdated);
     // });
-    
   }
 
   void _checkAppVersion() async {
@@ -143,7 +141,9 @@ class _LoginPageState extends State<LoginPage> {
         SystemNavigator.pop();
       } else if (permission == LocationPermission.deniedForever) {
         log("'Location permissions are permanently denied");
-        EasyLoading.showError("ไม่พบสิทธิ์การใช้งาน GPS\nกรุณาให้สิทธิ์เพื่อใช้งาน", dismissOnTap: false);
+        EasyLoading.showError(
+            "ไม่พบสิทธิ์การใช้งาน GPS\nกรุณาให้สิทธิ์เพื่อใช้งาน",
+            dismissOnTap: false);
         await Future.delayed(const Duration(seconds: 5));
         SystemNavigator.pop();
       } else {
@@ -202,7 +202,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _saveUserInformation(data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('employee_name', data["emp_fname"] + " " + data["emp_lname"]);
+    prefs.setString(
+        'employee_name', data["emp_fname"] + " " + data["emp_lname"]);
     prefs.setString('employee_type', data["emp_type"]);
     prefs.setString('employee_code', data["emp_code"]);
     prefs.setString('employee_id', data["emp_id"]);
@@ -231,7 +232,8 @@ class _LoginPageState extends State<LoginPage> {
   void _checkNFCAvailable() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
     setState(() {
-      isNfcAvailable = isAvailable ? "อุปกรณ์นี้รองรับ NFC" : "อุปกรณ์นี้ไม่รองรับ NFC";
+      isNfcAvailable =
+          isAvailable ? "อุปกรณ์นี้รองรับ NFC" : "อุปกรณ์นี้ไม่รองรับ NFC";
       if (isAvailable) {
         _textColor = const Color.fromARGB(255, 32, 133, 56);
       }
@@ -239,7 +241,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _checkForUpdates() async {
-    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+    ConnectivityResult connectivityResult =
+        await (Connectivity().checkConnectivity());
     var isConectToInternet = false;
     if (connectivityResult == ConnectivityResult.mobile) {
       // Mobile network available.
@@ -258,10 +261,14 @@ class _LoginPageState extends State<LoginPage> {
 
     // if (!isConectToInternet) {
     if (!isConectToInternet) {
-      await Commom().showSnackBarNotificationError(context, 'ไม่พบการเชื่อมต่ออินเตอร์เน็ต\r\nกรุณาเชื่อมต่ออินเตอร์เน็ต\r\nและเปิดแอปพลิเคชั่นใหม่อีกครั้ง', 3);
+      await Commom().showSnackBarNotificationError(
+          context,
+          'ไม่พบการเชื่อมต่ออินเตอร์เน็ต\r\nกรุณาเชื่อมต่ออินเตอร์เน็ต\r\nและเปิดแอปพลิเคชั่นใหม่อีกครั้ง',
+          3);
       return;
     } else {
-      await Commom().showSnackBarNotificationSuccess(context, 'กำลังตรวจสอบการอัปเดตแอปพลิเคชั่น...', 10);
+      await Commom().showSnackBarNotificationSuccess(
+          context, 'กำลังตรวจสอบการอัปเดตแอปพลิเคชั่น...', 10);
     }
     final versionData = await ApiCalling().checkForUpdate();
     log("_checkForUpdates");
@@ -321,7 +328,11 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
-        body: {'method': 'ncalogin', 'paruser': username, 'parpassword': password},
+        body: {
+          'method': 'ncalogin',
+          'paruser': username,
+          'parpassword': password
+        },
       );
 
       inspect(response);
@@ -362,7 +373,8 @@ class _LoginPageState extends State<LoginPage> {
       EasyLoading.dismiss();
       log("ERROR");
       log('An error occurred: $error');
-      _showErrorDialog('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่ออินเตอร์เน็ตและลองใหม่อีกครั้ง');
+      _showErrorDialog(
+          'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ โปรดตรวจสอบการเชื่อมต่ออินเตอร์เน็ตและลองใหม่อีกครั้ง');
     } finally {
       setState(() {
         isLoading = false;
@@ -423,12 +435,16 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20),
                     Text(
                       'ON THE WAY',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue.shade700),
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade700),
                     ),
                     const SizedBox(height: 20),
                     TextField(
                       controller: usernameController,
-                      decoration: const InputDecoration(labelText: 'รหัสพนักงาน'),
+                      decoration:
+                          const InputDecoration(labelText: 'รหัสพนักงาน'),
                       keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 20),
@@ -437,7 +453,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextField(
                         controller: passwordController,
                         obscureText: true,
-                        decoration: const InputDecoration(labelText: 'รหัสผ่าน'),
+                        decoration:
+                            const InputDecoration(labelText: 'รหัสผ่าน'),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -479,7 +496,10 @@ class _LoginPageState extends State<LoginPage> {
                     const Center(
                       child: Text(
                         "Build : 08052025R1",
-                        style: TextStyle(fontSize: 8, fontWeight: FontWeight.normal, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black),
                         textAlign: TextAlign.center,
                       ),
                     ),
