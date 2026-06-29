@@ -219,7 +219,7 @@ class _CountdownGateState extends State<CountdownGate> {
                     ),
                     const SizedBox(height: 18),
                     Text(
-                      'ระบบจะเปิดให้ใช้งานโดยอัตโนมัติเมื่อถึงเวลาที่กำหนด',
+                      'ระบบจะเปิดให้ใช้งานโดยอัตโนมัติเมื่อถึงเวลาที่กำหนด.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13,
